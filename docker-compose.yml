@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  sokol_proxy:
+    build: .
+    container_name: "sokol_proxy"
+    env_file:
+      - .env
+    restart: "always"
+    network_mode: "host"
