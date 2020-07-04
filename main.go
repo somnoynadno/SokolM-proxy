@@ -25,7 +25,7 @@ func main() {
 		// get access cookie
 		r, err := api.Login()
 		if err != nil {
-			log.Error(err)
+			log.Error("login error:", err)
 			continue
 		}
 
@@ -41,7 +41,7 @@ func main() {
 			log.Info("fetching data for device " + d.ID)
 			resp, err := api.GetDailyData(d.ID, r.Cookies())
 			if err != nil {
-				log.Error(err)
+				log.Error("error fetching data: ", err)
 				continue
 			}
 
@@ -53,7 +53,7 @@ func main() {
 			var sokolData []models.SokolM
 			err = json.NewDecoder(resp.Body).Decode(&sokolData)
 			if err != nil {
-				log.Error(err)
+				log.Error("json decoding error: ", err)
 				continue
 			}
 
@@ -70,7 +70,7 @@ func main() {
 			// insert fetched data
 			err = db.InsertData(d.NumberInDB, filteredData)
 			if err != nil {
-				log.Error(err)
+				log.Error("gorm insert error: ", err)
 				continue
 			}
 		}
